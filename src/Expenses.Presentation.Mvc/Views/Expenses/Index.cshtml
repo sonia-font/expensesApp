@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Expenses.Data.Expense>;
+@{
+    ViewBag.Title = "List of Expenses";
+    ViewBag.Category = Enum.GetValues(typeof(Expenses.Data.Category)).Cast<Expenses.Data.Category>();
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+@using (Html.BeginForm())
+{
+    <p>
+        Start Date: @Html.TextBox("init", "init", new { @type = "date", @class = "datepicker" })
+        End Date: @Html.TextBox("end", "end", new { @type = "date", @class = "datepicker" })
+        Category: @Html.DropDownList("category", new SelectList(ViewBag.Category))                
+
+        <input type="submit" value="Search" class="btn btn-success"/>
+    </p>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Concept)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cost)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Concept)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
